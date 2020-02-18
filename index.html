@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  /* body {
+    /* background: rgb(231, 233, 209); */
+  /* } */ */
+  .main-content {
+    min-width: 1200px;
+    margin: 0 auto;
+  }
+  .state {
+    fill: none;
+    stroke: #a9a9a9;
+    stroke-width: 1;
+  }
+
+  .cause-select {
+    display: block;
+    width: 350px;
+    margin: 0 auto;
+  }
+
+  .header-title {
+    text-align: center;
+  }
+
+  #tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 1px;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  #tooltip h4 {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  #tooltip {
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid grey;
+    border-radius: 5px;
+    font-size: 12px;
+    width: auto;
+    padding: 4px;
+    color: white;
+    opacity: 0;
+  }
+
+  #tooltip table {
+    table-layout: fixed;
+  }
+
+  #tooltip tr td {
+    padding: 0;
+    margin: 0;
+  }
+
+  #tooltip tr td:nth-child(1) {
+    width: 180px;
+    text-align: left
+  }
+
+  #tooltip tr td:nth-child(2) {
+    text-align: right;
+  }
+
+  #barsvg text {
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: end;
+  }
+  .bar-box {
+    display: flex;
+    flex-direction: column;
+  }
+  .bar-box svg {
+    display: block;
+  }
+
+  .statesvg {
+    float: left;
+  }
+
+  .barSvg {
+    float: left;
+  }
+
+  .colorBarSvg {
+    margin-left: 70px;
+    float: left;
+  }
+
+  .time-line {
+    margin: 20px auto;
+    height: 50px;
+  }
+
+  .time-line .time-line-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .time-line-box>.circle {
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #86b7e7;
+    border: 2px solid #fff;
+  }
+
+  .time-line-box>.circle:hover {
+    transform: scale(1.3);
+    transition: all ease-in-out .1s;
+  }
+
+  .time-line-box>.circle>div {
+    position: relative;
+    font-size: 12px;
+    top: 14px;
+    left: -5px;
+    color: #000;
+  }
+
+  .time-line-box>.active {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: red;
+    border: 3px solid #fff;
+    box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .time-line-box>.active>div {
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+  }
+
+  .time-line-box>.line {
+    width: 50px;
+    height: 2px;
+    background: #000;
+  }
+</style>
+
+<body>
+  <div class="main-content">
+    <div id="tooltip"></div>
+    <h1 class="header-title">Leading Causes of Death in the U.S.</h1>
+    <!-- filter params -->
+    <form id="stateOptionForm">
+      <div class="time-line">
+        <div class="time-line-box">
+          <div class="circle">
+            <div>2005</div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>2006</div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2007
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2008
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2009
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2010
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2011
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>2012</div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>2013</div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2014
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2015
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2016
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2017
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle">
+            <div>
+              2018
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="circle active">
+            <div>
+              2019
+            </div>
+          </div>
+        </div>
+      </div>
+      <select class="cause-select"></select>
+  
+    </form>
+    <!-- us state map -->
+    <svg width="960" height="600" id="statesvg" class="statesvg">
+    </svg>
+    <!-- colorBarSvg -->
+    <div class="bar-box">
+      <svg height="100" width="300" class="colorBarSvg">
+        <rect transform="translate(5,30)" height="30" width="250" fill="url(#_ABSTRACT_RENDERER_ID_2)"></rect>
+        <text x="5" y="80" style="fill:black;" id="minValue">
+          0
+        </text>
+        <text x="250" y="80" style="fill:black;" id="maxValue">
+          1
+        </text>
+      </svg>
+      <!-- svg to hold the map. -->
+      <svg id="barsvg" height="530" width="310" class="barSvg">
+      </svg>
+    </div>
+  
+    <svg>
+      <defs>
+        <linearGradient id="_ABSTRACT_RENDERER_ID_2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#D1E9E9;stop-opacity:1">
+          </stop>
+          <stop offset="100%" style="stop-color:#336666;stop-opacity:1"></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <script src="./js/d3.js"></script>
+  <script src="./js/draw-content.js"></script> <!-- creates uStates. -->
+  <script src="./js/jquery.min.js"></script>
+  <script>
+
+    var colorScale;  // color function(create advance color)
+    var barScale; 
+    var colorBarScale;
+    var fixer = 0.2;
+    var states = {};
+    var min;
+    var mapStateName = {};
+    var max;
+    var scaledMax;
+    var scaledMin;
+    // var colorProperty = "numExe";
+    var colorProperty = 'Unintentional Injuries';
+    var yearOptionArr = [];
+    var selectedYear = 2019;
+    var showAllCause = false;
+
+    var xAxis;
+
+    mapStateName = uStates.mapFullNameToWord();
+    // load data
+    d3.json('data/death.json', function (error, deathData) {
+
+      const setTypeCauses = new Set();
+      const setTypeYear = new Set();
+
+      // 找出所有年份,用set去重
+      deathData.forEach(item => {
+        setTypeCauses.add(item['CAUSE_NAME'])
+        yearOptionArr = [...setTypeYear.add(item.YEAR)];
+        yearOptionArr.sort((a, b) => {
+          return a - b;
+        });
+      })
+
+      // 找出所有causes，用set去重
+      var selectElement = $('#stateOptionForm select');
+      selectElement.empty();
+      setTypeCauses.forEach(function (item, index) {
+        selectElement.append('<option value="' + item + '">' + index + '</option>');
+      });
+
+      // 根据year和cause过滤数据，找出符合当前选中参数下的数据
+      function fiterByYearAndCause(cause = '', year = 2019, ) {
+        return deathData.filter(item => {
+          return item.YEAR === year && item['CAUSE_NAME'] === cause;
+        })
+      }
+
+      d3.selection.prototype.moveToFront = function () {
+        return this.each(function () {
+          this.parentNode.appendChild(this);
+        });
+      }
+      d3.selection.prototype.moveToBack = function () {
+        return this.each(function () {
+          var firstChild = this.parentNode.firstChild;
+          if (firstChild) {
+            this.parentNode.insertBefore(this, firstChild);
+          }
+        });
+      };
+
+      // tooltip提示框
+      function tooltipHtml(n, d = {}) {
+        return "<h4>" + n + "</h4><table>" +
+          "<tr><td>year</td><td>" + (d.YEAR) + "</td></tr>" +
+          "<tr><td>CAUSE_NAME</td><td>" + (d['CAUSE_NAME']) + "</td></tr>" +
+          "<tr><td>Number of persons death</td><td>" + (d.DEATHS) + "</td></tr>" +
+          "<tr><td>Number of all population</td><td>" + (d.sumpop) + "</td></tr>" +
+          "<tr><td>Number of death/k</td><td>" + (d['death/k']) + "</td></tr>" +
+          "</table>";
+      }
+
+      // 颜色深浅范围生成函数
+      function defineScales(filterDataByCause, colorProperty) {
+        max = d3.max(filterDataByCause, function (d) {
+          return parseInt(d['death/k'] * 100);
+        });
+        scaledMax = Math.pow(max, fixer);
+
+        min = d3.min(filterDataByCause, function (d) {
+          return parseInt(d['death/k'] * 100);
+        });
+        scaledMin = Math.pow(min, fixer);
+        colorScale = d3.scale.linear()
+          //d3.scale.pow()
+          .domain([scaledMin
+            , scaledMax])
+          //.range(["#FFA8A8","#FF0000"])
+          .range(["#D1E9E9", "#336666"]);
+
+        colorBarScale = d3.scale.linear()
+          .domain([min, max])
+          .range([0, 200]);
+
+        barScale = d3.scale.linear()
+          .domain([min, max])
+          .range([0, 220]);
+      };
+
+      // 更改筛选条件时更新地图视图（颜色）
+      function updateStates(colorProperty, year) {
+        states = {};
+
+        const filterDataByCause = fiterByYearAndCause(colorProperty, year);
+        defineScales(filterDataByCause, colorProperty)
+        // var states1 = {};
+        filterDataByCause.forEach(function (d) {
+          var number = parseInt(d['death/k'] * 100);
+          var color = colorScale(Math.pow(number, 0.2));
+          d.state = mapStateName[d.STATE];
+          d.color = color;
+          d.YEAR = year;
+          d[colorProperty] = d['death/k'];
+          if (d.state) {
+            states[d.state] = d;
+          }
+        })
+      }
+      // select下拉框改变值时，触发更新函数，重新绘制可视化的地图和bar
+      $('#stateOptionForm select').change(function () {
+        colorProperty = $(this).val();
+        if (colorProperty === 'All Causes') {
+          showAllCause = true;
+        }
+        updateStates(colorProperty, selectedYear);
+        uStates.drawStates("#statesvg", states, tooltipHtml);
+        uStates.removeChart("#barsvg");
+        uStates.drawBars("#barsvg", states, colorProperty, barScale);
+
+      });
+
+      // 选择年份时，效果同上
+      $('.time-line-box .circle').click(function () {
+        $('#slider > svg').remove();
+        const i = $(this).index();
+        const year = selectYear(i);
+        selectedYear = year;
+        updateStates(colorProperty, selectedYear);
+        uStates.drawStates("#statesvg", states, tooltipHtml);
+        uStates.removeChart("#barsvg");
+        uStates.drawBars("#barsvg", states, colorProperty, barScale);
+        $(this)
+          .addClass('active')
+          .siblings()
+          .removeClass('active');
+      });
+
+
+
+      // first load data（default year:2019，cause:Unintentional Injuries ）
+      updateStates(colorProperty, selectedYear);
+      uStates.drawStates("#statesvg", states, tooltipHtml);
+      uStates.drawBars("#barsvg", states, colorProperty, barScale);
+
+      // 选择年份，得到对应的year参数
+      function selectYear(i) {
+        const selectObj = {
+          0: 2005,
+          2: 2006,
+          4: 2007,
+          6: 2008,
+          8: 2009,
+          10: 2010,
+          12: 2011,
+          14: 2012,
+          16: 2013,
+          18: 2014,
+          20: 2015,
+          22: 2016,
+          24: 2017,
+          26: 2018,
+          28: 2019,
+        };
+        return selectObj[i];
+      }
+
+    });
+
+
+
+  </script>
+
+</body>
