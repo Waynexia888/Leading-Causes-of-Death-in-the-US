@@ -4,7 +4,7 @@
 
 ![Homepage](/images/Homepage.png)
 
-![Details](/images/Details.png)
+![Details](/images/Details111.png)
 
 ### About
 
