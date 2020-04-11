@@ -2,6 +2,8 @@
 
 [Live Demo](http://leading-cause-of-death-in-the-us.s3-website-us-west-1.amazonaws.com/)
 
+![Homepage](https://ibb.co/F6NB5Wp)
+
 The Data Visualization web application was created using node.js, datamaps.js, d3.js, Javascript, HTML, CSS
 
 The dataset consiting of the leading causes of death in the United States of America for a period between 2005-2019 was pulled from data.gov.
