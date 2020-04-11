@@ -4,6 +4,8 @@
 
 ![Homepage](/images/Homepage.png)
 
+![Details](/images/Details.png)
+
 ### About
 
 The Data Visualization web application was created using node.js, datamaps.js, d3.js, Javascript, HTML, CSS
