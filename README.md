@@ -2,7 +2,7 @@
 
 [Live Demo](http://leading-cause-of-death-in-the-us.s3-website-us-west-1.amazonaws.com/)
 
-![Homepage](https://ibb.co/F6NB5Wp)
+![Homepage](/images/Homepage.png)
 
 The Data Visualization web application was created using node.js, datamaps.js, d3.js, Javascript, HTML, CSS
 
