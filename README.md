@@ -1,8 +1,10 @@
 # Leading-Causes-of-Death-in-the-US
 
-[Live Demo](http://leading-cause-of-death-in-the-us.s3-website-us-west-1.amazonaws.com/)
+[Live Demo, Please Click Here](http://leading-cause-of-death-in-the-us.s3-website-us-west-1.amazonaws.com/)
 
 ![Homepage](/images/Homepage.png)
+
+### About
 
 The Data Visualization web application was created using node.js, datamaps.js, d3.js, Javascript, HTML, CSS
 
@@ -29,4 +31,3 @@ To install: `npm install -g http-server`
 
 This will start the server on http://localhost:8080 from the current working directory.
 
-### 
